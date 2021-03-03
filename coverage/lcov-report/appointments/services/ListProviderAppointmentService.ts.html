@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for users/services/ShowProfileService.ts</title>
+    <title>Code coverage report for appointments/services/ListProviderAppointmentService.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">users/services</a> ShowProfileService.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">appointments/services</a> ListProviderAppointmentService.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -107,58 +107,58 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { injectable, inject } from 'tsyringe';
 &nbsp;
-&nbsp;
-import User from '../infra/typeorm/entities/User';
-import IUserRepository from '../repositories/IUserRepository';
-import AppError from '@shared/erros/AppError';
-&nbsp;
+import Appointment from '../infra/typeorm/entities/Appointment';
+import IAppointmentRepository from '../repositories/IAppointmentsRepository'
 &nbsp;
 interface IRequestDTO {
-    user_id: string
+    provider_id: string;
+    day: number;
+    month: number;
+    year: number;
 }
 &nbsp;
 @injectable()
-class ShowProfileService {
+class ListProiverAppointmentService {
 &nbsp;
     constructor(
-        @inject('UsersRepository')
-        private usersRepository: IUserRepository,
-&nbsp;
+        @inject('AppointmentsRepository')
+        private appointmentRepository: IAppointmentRepository
         ){}
 &nbsp;
-    public async execute({ user_id }: IRequestDTO): Promise&lt;User&gt;{
+    public async execute({ provider_id, day, month, year }: IRequestDTO): Promise&lt;Appointment[]&gt;{
 &nbsp;
-        const user = await this.usersRepository.findById(user_id);
+        const appointments = await this.appointmentRepository.findAllInDayFromProvider({
+            provider_id,
+            day,
+            month,
+            year
+        });
 &nbsp;
-        if(!user){
-            throw new AppError('User not found');
-        }
-&nbsp;
-        return user;
+        return appointments
     }
 }
 &nbsp;
-export default ShowProfileService;
+export default ListProiverAppointmentService;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
